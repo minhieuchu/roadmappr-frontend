@@ -1,16 +1,12 @@
 import { pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 
-export const NavBarContainer = styled("div")(({ theme }) => ({
+export const NavBarContainer = styled("div")({
   width: "100vw",
   height: "4rem",
-  position: "fixed",
-  top: 0,
-  left: 0,
   display: "flex",
   justifyContent: "center",
   padding: "0 0.5rem",
-  borderBottom: `1px solid ${theme.palette.grey[300]}`,
   boxSizing: "border-box",
 
   "& > div:first-of-type": {
@@ -21,7 +17,7 @@ export const NavBarContainer = styled("div")(({ theme }) => ({
     alignItems: "center",
     justifyContent: "space-between",
   },
-}));
+});
 
 export const NavBarItem = styled("div")({
   height: "100%",
@@ -32,7 +28,6 @@ export const NavBarItem = styled("div")({
   borderRadius: "0.25rem",
   boxSizing: "border-box",
   cursor: "pointer",
-  transition: "0.3s",
 
   svg: {
     fontSize: "2.25rem",
@@ -40,8 +35,4 @@ export const NavBarItem = styled("div")({
   },
 
   span: { fontSize: "1.25rem", fontWeight: 600 },
-
-  "&:hover": {
-    backgroundColor: pink[50],
-  },
 });
