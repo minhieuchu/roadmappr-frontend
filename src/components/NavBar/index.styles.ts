@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 import { pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 
@@ -19,11 +21,12 @@ export const NavBarContainer = styled("div")({
   },
 });
 
-export const NavBarItem = styled("div")({
+export const NavBarItem = styled(NavLink)(({ theme }) => ({
   height: "100%",
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",
+  color: theme.palette.text.primary,
   padding: "0.5rem 0.75rem",
   borderRadius: "0.25rem",
   boxSizing: "border-box",
@@ -35,4 +38,8 @@ export const NavBarItem = styled("div")({
   },
 
   span: { fontSize: "1.25rem", fontWeight: 600 },
-});
+
+  "&:hover": {
+    color: theme.palette.text.primary,
+  },
+}));
