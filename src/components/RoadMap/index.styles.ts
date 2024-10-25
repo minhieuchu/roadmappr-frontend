@@ -23,5 +23,32 @@ export const LeftPanelContainer = styled("div")(({ theme }) => ({
   left: 0,
   width: "4rem",
   height: "calc(100vh - 3.75rem)",
+  borderRight: `1px solid ${theme.palette.grey[300]}`,
   backgroundColor: theme.palette.grey[200],
+}));
+
+export const FlowContainer = styled("div")({
+  position: "fixed",
+  top: "3.75rem",
+  left: "4rem",
+  width: "calc(100vw - 4rem)",
+  height: "calc(100vh - 3.75rem)",
+});
+
+export const AddButtonContainer = styled("div")(({ theme }) => ({
+  position: "absolute",
+  top: "2rem",
+  right: "2.5rem",
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  color: theme.palette.text.secondary,
+  fontSize: "1.125rem",
+  padding: "0.4rem 1rem",
+  paddingLeft: "0.75rem",
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: "0.75rem",
+  backgroundColor: theme.palette.grey[50],
+  cursor: "pointer",
+  zIndex: 1,
 }));

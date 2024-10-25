@@ -1,3 +1,5 @@
+import "@xyflow/react/dist/style.css";
+
 import { Route, Routes } from "react-router-dom";
 
 import { HomePage } from "@/components/HomePage";
