@@ -17,10 +17,12 @@
     "@mui/material": "^6.1.5",
     "@xyflow/react": "^12.3.2",
     "axios": "^1.7.7",
+    "immer": "^10.1.1",
     "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

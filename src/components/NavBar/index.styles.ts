@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import { pink } from "@mui/material/colors";
+import { cyan } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 
 export const NavBarContainer = styled("div")({
@@ -34,7 +34,7 @@ export const NavBarItem = styled(NavLink)(({ theme }) => ({
 
   svg: {
     fontSize: "2.25rem",
-    color: pink[500],
+    color: cyan[500],
   },
 
   span: { fontSize: "1.25rem", fontWeight: 600 },
