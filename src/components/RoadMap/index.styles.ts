@@ -56,3 +56,14 @@ export const AddButtonContainer = styled("div")(({ theme }) => ({
   cursor: "pointer",
   zIndex: 1,
 }));
+
+export const CustomNodeContainer = styled("div")({
+  width: "10rem",
+  height: "4rem",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  border: `2px solid ${cyan[600]}`,
+  borderRadius: "0.5rem",
+});
