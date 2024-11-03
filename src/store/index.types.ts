@@ -1,30 +1,19 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+export type RoadmapDialogName = "AddNodeDialog" | "";
 
-import {
-  RoadMapprDialogName,
-  RoadMapprState,
-  RoadMapprStoreType,
-} from "@/store";
+export type Roadmap = {
+  _id: string;
+  target: string;
+  steps: Roadmap[];
+};
 
-export const useRoadMapprStore = create(
-  persist(
-    immer<RoadMapprStoreType>((set) => ({
-      dialogName: "",
+export interface RoadmapState {
+  dialogName: RoadmapDialogName;
+  roadMap: Roadmap;
+}
 
-      setDialogName: (name: RoadMapprDialogName) => {
-        set((state) => {
-          state.dialogName = name;
-        });
-      },
-    })),
-    {
-      name: "RoadMapprStorage",
-    },
-  ),
-);
+type Actions = {
+  setDialogName: (name: RoadmapDialogName) => void;
+  setRoadmap: (roadMap: Roadmap) => void;
+};
 
-export const selectDialogName = (state: RoadMapprState) => state.dialogName;
-
-export const { setDialogName } = useRoadMapprStore.getState();
+export type RoadmapStoreType = RoadmapState & Actions;

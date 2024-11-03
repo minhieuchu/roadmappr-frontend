@@ -1,4 +1,4 @@
-import { LeftPanelContainer } from "@/components/RoadMap/index.styles";
+import { LeftPanelContainer } from "@/components/RoadmapFlow/index.styles";
 
 export function LeftPanel() {
   return <LeftPanelContainer></LeftPanelContainer>;

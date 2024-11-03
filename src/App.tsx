@@ -3,13 +3,13 @@ import "@xyflow/react/dist/style.css";
 import { Route, Routes } from "react-router-dom";
 
 import { HomePage } from "@/components/HomePage";
-import { RoadMap } from "@/components/RoadMap";
+import { RoadmapFlow } from "@/components/RoadmapFlow";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/create" element={<RoadMap />} />
+      <Route path="/create" element={<RoadmapFlow />} />
     </Routes>
   );
 }

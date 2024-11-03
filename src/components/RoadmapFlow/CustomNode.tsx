@@ -1,7 +1,7 @@
-import { CustomNodeContainer } from "@/components/RoadMap/index.styles";
+import { CustomNodeContainer } from "@/components/RoadmapFlow/index.styles";
 import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
-type CustomNodeData = Node<{ target: string }, "target">;
+export type CustomNodeData = Node<{ target: string }, "target">;
 
 export function CustomNode({ data }: NodeProps<CustomNodeData>) {
   return (

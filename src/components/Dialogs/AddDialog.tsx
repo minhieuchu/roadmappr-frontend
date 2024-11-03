@@ -5,11 +5,7 @@ import {
   DialogStyled,
   TextFieldStyled,
 } from "@/components/Dialogs/index.styles";
-import {
-  selectDialogName,
-  setDialogName,
-  useRoadMapprStore,
-} from "@/store/index.types";
+import { selectDialogName, setDialogName, useRoadmapStore } from "@/store";
 import { DialogActions, DialogContent } from "@mui/material";
 import Button from "@mui/material/Button";
 import { cyan } from "@mui/material/colors";
@@ -17,7 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 export function AddDialog() {
   const [input, setInput] = useState("");
-  const selectedDialogName = useRoadMapprStore(selectDialogName);
+  const selectedDialogName = useRoadmapStore(selectDialogName);
   const isOpen = useMemo(
     () => selectedDialogName === "AddNodeDialog",
     [selectedDialogName]
