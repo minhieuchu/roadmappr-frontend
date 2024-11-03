@@ -4,11 +4,12 @@ import { AddDialog } from "@/components/Dialogs/AddDialog";
 import { CustomNode } from "@/components/RoadmapFlow/CustomNode";
 import {
   AddButtonContainer,
-  FlowContainer,
+  RoadmapGridContainer,
 } from "@/components/RoadmapFlow/index.styles";
 import { LeftPanel } from "@/components/RoadmapFlow/LeftPanel";
 import { TopPanel } from "@/components/RoadmapFlow/TopPanel";
-import { selectRoadmap, setDialogName, useRoadmapStore } from "@/store";
+import useLayout from "@/components/RoadmapFlow/useLayout";
+import { selectSelectedRoadmap, setDialogName, useRoadmapStore } from "@/store";
 import { Roadmap } from "@/store/index.types";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -17,21 +18,28 @@ import {
   Edge,
   Node,
   ReactFlow,
+  ReactFlowProvider,
   useEdgesState,
   useNodesState,
+  useReactFlow,
 } from "@xyflow/react";
 
 const nodeTypes = {
   CustomNode: CustomNode,
 };
 
-export function RoadmapFlow() {
-  const selectedRoadmap = useRoadmapStore(selectRoadmap);
+function RoadmapGrid() {
+  const selectedRoadmap = useRoadmapStore(selectSelectedRoadmap);
+  const reactFlowInstance = useReactFlow();
+
   const { initialNodes, initialEdges } = useMemo(() => {
     const initialNodes: Node[] = [];
     const initialEdges: Edge[] = [];
 
-    const parseRoadmap = (roadmap: Roadmap) => {
+    const parseRoadmap = (roadmap: Roadmap | null) => {
+      if (!roadmap) {
+        return;
+      }
       initialNodes.push({
         id: roadmap._id,
         type: "CustomNode",
@@ -39,7 +47,7 @@ export function RoadmapFlow() {
         data: { target: roadmap.target },
       });
 
-      roadmap.steps.forEach((step) => {
+      roadmap.steps?.forEach((step) => {
         initialEdges.push({
           id: `${roadmap._id}_${step._id}`,
           source: roadmap._id,
@@ -53,38 +61,57 @@ export function RoadmapFlow() {
 
     return { initialNodes, initialEdges };
   }, [selectedRoadmap]);
+
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+
   const onAddButtonClick = useCallback(() => {
     setDialogName("AddNodeDialog");
   }, []);
 
+  const onReactFlowInit = useCallback(() => {
+    setTimeout(() => {
+      reactFlowInstance.fitView({ padding: 0.3 });
+    });
+  }, [reactFlowInstance]);
+
+  useLayout();
+
   return (
-    <>
-      <TopPanel />
-      <LeftPanel />
-      <FlowContainer>
-        <AddDialog />
+    <RoadmapGridContainer>
+      <AddDialog />
+      {!nodes.length && (
         <AddButtonContainer onClick={onAddButtonClick}>
           <AddIcon />
           {"Add"}
         </AddButtonContainer>
-        <ReactFlow
-          nodeTypes={nodeTypes}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          nodes={nodes}
-          edges={edges}
-          style={{ borderBottomLeftRadius: "1rem" }}
-        >
-          <Background
-            bgColor="#272038"
-            variant={BackgroundVariant.Dots}
-            gap={20}
-            size={1.25}
-          />
-        </ReactFlow>
-      </FlowContainer>
-    </>
+      )}
+      <ReactFlow
+        nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodes={nodes}
+        edges={edges}
+        style={{ borderBottomLeftRadius: "1rem" }}
+        onInit={onReactFlowInit}
+      >
+        <Background
+          bgColor="#272038"
+          variant={BackgroundVariant.Dots}
+          gap={20}
+          size={1.25}
+        />
+      </ReactFlow>
+    </RoadmapGridContainer>
+  );
+}
+
+export function RoadmapFlow() {
+  return (
+    <ReactFlowProvider>
+      <TopPanel />
+      <LeftPanel />
+      <RoadmapGrid />
+    </ReactFlowProvider>
   );
 }

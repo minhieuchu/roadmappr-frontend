@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.5",
     "@xyflow/react": "^12.3.2",
     "axios": "^1.7.7",
+    "dagre": "^0.8.5",
     "immer": "^10.1.1",
     "path": "^0.12.7",
     "react": "^18.3.1",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@types/dagre": "^0.7.52",
     "@types/node": "^22.7.9",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",

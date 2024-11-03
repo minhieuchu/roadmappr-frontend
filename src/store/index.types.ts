@@ -3,17 +3,19 @@ export type RoadmapDialogName = "AddNodeDialog" | "";
 export type Roadmap = {
   _id: string;
   target: string;
-  steps: Roadmap[];
+  steps?: Roadmap[];
 };
 
 export interface RoadmapState {
   dialogName: RoadmapDialogName;
-  roadMap: Roadmap;
+  roadmaps: Roadmap[];
+  selectedRoadmap: Roadmap | null;
 }
 
 type Actions = {
   setDialogName: (name: RoadmapDialogName) => void;
-  setRoadmap: (roadMap: Roadmap) => void;
+  setRoadmaps: (roadmaps: Roadmap[]) => void;
+  setSelectedRoadmap: (roadMap: Roadmap) => void;
 };
 
 export type RoadmapStoreType = RoadmapState & Actions;

@@ -28,7 +28,7 @@ export const LeftPanelContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.grey[200],
 }));
 
-export const FlowContainer = styled("div")({
+export const RoadmapGridContainer = styled("div")({
   position: "fixed",
   top: "3.5rem",
   left: "4rem",
@@ -46,13 +46,13 @@ export const AddButtonContainer = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",
-  color: theme.palette.text.secondary,
+  color: theme.palette.common.white,
   fontSize: "1.125rem",
   padding: "0.4rem 1.5rem",
   paddingLeft: "1rem",
-  border: `1px solid ${theme.palette.divider}`,
+  border: `2px solid ${cyan[600]}`,
   borderRadius: "0.75rem",
-  backgroundColor: theme.palette.grey[50],
+  backgroundColor: "#272038",
   cursor: "pointer",
   zIndex: 1,
 }));

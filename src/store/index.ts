@@ -9,24 +9,12 @@ import {
   RoadmapStoreType,
 } from "@/store/index.types";
 
-const tmp: Roadmap = {
-  _id: "0",
-  target: "First target",
-  steps: [
-    { _id: "1", target: "second target", steps: [] },
-    {
-      _id: "2",
-      target: "3rd target",
-      steps: [{ _id: "3", target: "4th target", steps: [] }],
-    },
-  ],
-};
-
 export const useRoadmapStore = create(
   persist(
     immer<RoadmapStoreType>((set) => ({
       dialogName: "",
-      roadMap: tmp,
+      roadmaps: [],
+      selectedRoadmap: null,
 
       setDialogName: (name: RoadmapDialogName) => {
         set((state) => {
@@ -34,9 +22,15 @@ export const useRoadmapStore = create(
         });
       },
 
-      setRoadmap: (roadMap: Roadmap) => {
+      setRoadmaps: (roadMaps: Roadmap[]) => {
         set((state) => {
-          state.roadMap = roadMap;
+          state.roadmaps = roadMaps;
+        });
+      },
+
+      setSelectedRoadmap: (roadMap: Roadmap) => {
+        set((state) => {
+          state.selectedRoadmap = roadMap;
         });
       },
     })),
@@ -47,6 +41,9 @@ export const useRoadmapStore = create(
 );
 
 export const selectDialogName = (state: RoadmapState) => state.dialogName;
-export const selectRoadmap = (state: RoadmapState) => state.roadMap;
+export const selectRoadmaps = (state: RoadmapState) => state.roadmaps;
+export const selectSelectedRoadmap = (state: RoadmapState) =>
+  state.selectedRoadmap;
 
-export const { setDialogName, setRoadmap } = useRoadmapStore.getState();
+export const { setDialogName, setRoadmaps, setSelectedRoadmap } =
+  useRoadmapStore.getState();
