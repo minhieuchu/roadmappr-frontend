@@ -36,8 +36,8 @@ export const useRoadmapStore = create(
     })),
     {
       name: "RoadmapStorage",
-    }
-  )
+    },
+  ),
 );
 
 export const selectDialogName = (state: RoadmapState) => state.dialogName;

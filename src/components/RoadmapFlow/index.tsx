@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { AddDialog } from "@/components/Dialogs/AddDialog";
 import { CustomNode } from "@/components/RoadmapFlow/CustomNode";
@@ -62,8 +62,19 @@ function RoadmapGrid() {
     return { initialNodes, initialEdges };
   }, [selectedRoadmap]);
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  useEffect(() => {
+    setNodes(initialNodes);
+    setTimeout(() => {
+      reactFlowInstance.fitView({ padding: 0.3 });
+    }, 100);
+  }, [initialNodes, setNodes, reactFlowInstance]);
+
+  useEffect(() => {
+    setEdges(initialEdges);
+  }, [initialEdges, setEdges]);
 
   const onAddButtonClick = useCallback(() => {
     setDialogName("AddNodeDialog");

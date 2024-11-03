@@ -16,14 +16,14 @@ export function AddDialog() {
   const selectedDialogName = useRoadmapStore(selectDialogName);
   const isOpen = useMemo(
     () => selectedDialogName === "AddNodeDialog",
-    [selectedDialogName]
+    [selectedDialogName],
   );
   const onClose = useCallback(() => setDialogName(""), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);
     },
-    []
+    [],
   );
   const onSubmit = useCallback(() => {
     axios.post(`${import.meta.env.VITE_BACKEND_URL}/create`, { target: input });

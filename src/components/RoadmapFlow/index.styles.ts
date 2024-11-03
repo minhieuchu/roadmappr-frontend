@@ -1,4 +1,5 @@
 import { cyan, teal } from "@mui/material/colors";
+import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
 
 export const TopPanelContainer = styled("div")({
@@ -29,11 +30,9 @@ export const LeftPanelContainer = styled("div")({
   flexDirection: "column",
   alignItems: "center",
   padding: "1.5rem 1rem",
-  border: `2px solid ${cyan[600]}`,
-  borderLeftWidth: 0,
   borderTopRightRadius: "1.25rem",
   borderBottomRightRadius: "1.25rem",
-  backgroundColor: "#372f4a",
+  backgroundColor: "#141020",
   boxSizing: "border-box",
   zIndex: 1,
 
@@ -41,6 +40,41 @@ export const LeftPanelContainer = styled("div")({
     color: "white",
     fontSize: "1.75rem",
     cursor: "pointer",
+  },
+});
+
+export const PopoverStyled = styled(Popover)({
+  ".MuiPaper-root": {
+    borderRadius: "1.25rem",
+  },
+});
+
+export const LeftPanelPopeverContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  width: "12rem",
+  height: "20rem",
+  padding: "1.5rem 0",
+  color: "white",
+  backgroundColor: "#141020",
+  borderRadius: "1rem",
+  boxSizing: "border-box",
+
+  "& > div": {
+    display: "flex",
+    alignItems: "center",
+    height: "2rem",
+    padding: "0 1.5rem",
+    transition: "0.2s",
+    cursor: "pointer",
+
+    "&:hover": {
+      color: cyan[500],
+    },
+
+    "&.selected": {
+      color: cyan[500],
+    },
   },
 });
 
