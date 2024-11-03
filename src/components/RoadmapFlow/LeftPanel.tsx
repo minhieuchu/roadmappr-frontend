@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { LeftPanelContainer } from "@/components/RoadmapFlow/index.styles";
 import { setRoadmaps, setSelectedRoadmap } from "@/store";
 import { Roadmap } from "@/store/index.types";
+import GridViewIcon from "@mui/icons-material/GridView";
 
 export function LeftPanel() {
   useEffect(() => {
@@ -23,5 +24,9 @@ export function LeftPanel() {
 
     fetchRoadmaps();
   }, []);
-  return <LeftPanelContainer></LeftPanelContainer>;
+  return (
+    <LeftPanelContainer>
+      <GridViewIcon />
+    </LeftPanelContainer>
+  );
 }

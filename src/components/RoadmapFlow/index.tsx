@@ -92,7 +92,6 @@ function RoadmapGrid() {
         onEdgesChange={onEdgesChange}
         nodes={nodes}
         edges={edges}
-        style={{ borderBottomLeftRadius: "1rem" }}
         onInit={onReactFlowInit}
       >
         <Background

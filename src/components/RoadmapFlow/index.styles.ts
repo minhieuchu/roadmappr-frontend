@@ -18,25 +18,38 @@ export const TopPanelContainer = styled("div")({
   },
 });
 
-export const LeftPanelContainer = styled("div")(({ theme }) => ({
+export const LeftPanelContainer = styled("div")({
+  position: "fixed",
+  top: "50%",
+  left: 0,
+  transform: "translateY(-50%)",
+  width: "4rem",
+  height: "20rem",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "1.5rem 1rem",
+  border: `2px solid ${cyan[600]}`,
+  borderLeftWidth: 0,
+  borderTopRightRadius: "1.25rem",
+  borderBottomRightRadius: "1.25rem",
+  backgroundColor: "#372f4a",
+  boxSizing: "border-box",
+  zIndex: 1,
+
+  "& > svg": {
+    color: "white",
+    fontSize: "1.75rem",
+    cursor: "pointer",
+  },
+});
+
+export const RoadmapGridContainer = styled("div")({
   position: "fixed",
   top: "3.5rem",
   left: 0,
   width: "100vw",
   height: "calc(100vh - 3.5rem)",
-  borderRight: `1px solid ${theme.palette.grey[300]}`,
-  backgroundColor: theme.palette.grey[200],
-}));
-
-export const RoadmapGridContainer = styled("div")({
-  position: "fixed",
-  top: "3.5rem",
-  left: "4rem",
-  width: "calc(100vw - 4rem)",
-  height: "calc(100vh - 4.25rem)",
-  backgroundColor: "white",
-  borderBottomLeftRadius: "1rem",
-  zIndex: 1,
 });
 
 export const AddButtonContainer = styled("div")(({ theme }) => ({
