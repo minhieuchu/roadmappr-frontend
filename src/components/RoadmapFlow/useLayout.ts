@@ -22,7 +22,7 @@ function useLayout() {
     }
 
     dagreGraph.setGraph({
-      rankdir: "LR",
+      rankdir: "TB",
       edgesep: 240,
       ranksep: 80,
       nodesep: 50,
@@ -52,11 +52,11 @@ function useLayout() {
         });
 
         return { ...node };
-      }),
+      })
     );
 
     setEdges((edges) =>
-      edges.map((edge) => ({ ...edge, style: { opacity: 1 } })),
+      edges.map((edge) => ({ ...edge, style: { opacity: 1 } }))
     );
   }, [getNodes, getEdges, setNodes, setEdges, nodesInitialized]);
 }

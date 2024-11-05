@@ -3,14 +3,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   LeftPanelContainer,
-  LeftPanelPopeverContainer,
+  LeftPanelPopoverContainer,
   PopoverStyled,
 } from "@/components/RoadmapFlow/index.styles";
 import {
   selectRoadmaps,
-  selectSelectedRoadmap,
+  selectSelectedRoadmapId,
   setRoadmaps,
-  setSelectedRoadmap,
+  setSelectedRoadmapId,
   useRoadmapStore,
 } from "@/store";
 import { Roadmap } from "@/store/index.types";
@@ -22,7 +22,7 @@ export function LeftPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isPopoverOpen = Boolean(anchorEl);
   const roadmaps = useRoadmapStore(selectRoadmaps);
-  const selectedRoadmap = useRoadmapStore(selectSelectedRoadmap);
+  const selectedRoadmapId = useRoadmapStore(selectSelectedRoadmapId);
 
   const handleLeftPanelIconClick = useCallback(() => {
     setAnchorEl(containerRef.current);
@@ -35,31 +35,35 @@ export function LeftPanel() {
   const handleRoadmapClick = useCallback(
     (roadmapId: string) => () => {
       const selectedRoadmap = roadmaps.find(
-        (roadmap) => roadmap._id === roadmapId,
+        (roadmap) => roadmap._id === roadmapId
       )!;
-      setSelectedRoadmap(selectedRoadmap);
+      setSelectedRoadmapId(selectedRoadmap._id);
       handlePopoverClose();
     },
-    [roadmaps, handlePopoverClose],
+    [roadmaps, handlePopoverClose]
   );
 
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
         const { data } = await axios.get<Roadmap[]>(
-          `${import.meta.env.VITE_BACKEND_URL}/roadmaps`,
+          `${import.meta.env.VITE_BACKEND_URL}/roadmaps`
         );
         setRoadmaps(data);
         if (data.length) {
-          setSelectedRoadmap(data[0]);
+          if (!data.some((roadmap) => roadmap._id === selectedRoadmapId)) {
+            setSelectedRoadmapId(data[0]._id);
+          }
+          return;
         }
+        setSelectedRoadmapId("");
       } catch (e) {
         console.error(e);
       }
     };
 
     fetchRoadmaps();
-  }, []);
+  }, [selectedRoadmapId]);
 
   return (
     <LeftPanelContainer ref={containerRef}>
@@ -72,17 +76,17 @@ export function LeftPanel() {
           horizontal: 84,
         }}
       >
-        <LeftPanelPopeverContainer>
+        <LeftPanelPopoverContainer>
           {roadmaps.map((roadmap) => (
             <div
               key={roadmap._id}
-              className={roadmap._id === selectedRoadmap?._id ? "selected" : ""}
+              className={roadmap._id === selectedRoadmapId ? "selected" : ""}
               onClick={handleRoadmapClick(roadmap._id)}
             >
               {roadmap.target}
             </div>
           ))}
-        </LeftPanelPopeverContainer>
+        </LeftPanelPopoverContainer>
       </PopoverStyled>
       <Tooltip title="Roadmaps">
         <GridViewIcon onClick={handleLeftPanelIconClick} />

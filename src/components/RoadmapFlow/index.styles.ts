@@ -1,4 +1,5 @@
 import { cyan, teal } from "@mui/material/colors";
+import Menu from "@mui/material/Menu";
 import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
 
@@ -49,7 +50,7 @@ export const PopoverStyled = styled(Popover)({
   },
 });
 
-export const LeftPanelPopeverContainer = styled("div")({
+export const LeftPanelPopoverContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   width: "12rem",
@@ -113,4 +114,16 @@ export const CustomNodeContainer = styled("div")({
   color: "white",
   border: `2px solid ${cyan[600]}`,
   borderRadius: "0.5rem",
+
+  svg: {
+    position: "absolute",
+    right: "0.25rem",
+    fontSize: "1.25rem",
+  },
+});
+
+export const MenuStyled = styled(Menu)({
+  ".MuiPaper-root": {
+    backgroundColor: "whitesmoke",
+  },
 });

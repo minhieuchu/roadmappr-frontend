@@ -9,7 +9,12 @@ import {
 import { LeftPanel } from "@/components/RoadmapFlow/LeftPanel";
 import { TopPanel } from "@/components/RoadmapFlow/TopPanel";
 import useLayout from "@/components/RoadmapFlow/useLayout";
-import { selectSelectedRoadmap, setDialogName, useRoadmapStore } from "@/store";
+import {
+  selectRoadmaps,
+  selectSelectedRoadmapId,
+  setDialogName,
+  useRoadmapStore,
+} from "@/store";
 import { Roadmap } from "@/store/index.types";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -29,22 +34,31 @@ const nodeTypes = {
 };
 
 function RoadmapGrid() {
-  const selectedRoadmap = useRoadmapStore(selectSelectedRoadmap);
+  const selectedRoadmapId = useRoadmapStore(selectSelectedRoadmapId);
+  const roadmaps = useRoadmapStore(selectRoadmaps);
   const reactFlowInstance = useReactFlow();
 
   const { initialNodes, initialEdges } = useMemo(() => {
     const initialNodes: Node[] = [];
     const initialEdges: Edge[] = [];
+    const selectedRoadmap = roadmaps.find(
+      (roadmap) => roadmap._id === selectedRoadmapId
+    );
+    if (!selectedRoadmap) {
+      return { initialNodes, initialEdges };
+    }
 
-    const parseRoadmap = (roadmap: Roadmap | null) => {
-      if (!roadmap) {
-        return;
-      }
+    const parseRoadmap = (roadmap: Roadmap, isRoot: boolean) => {
       initialNodes.push({
         id: roadmap._id,
         type: "CustomNode",
         position: { x: 0, y: 0 },
-        data: { target: roadmap.target },
+        data: {
+          _id: roadmap._id,
+          target: roadmap.target,
+          hasSource: !!roadmap.steps?.length,
+          hasTarget: !isRoot,
+        },
       });
 
       roadmap.steps?.forEach((step) => {
@@ -53,14 +67,13 @@ function RoadmapGrid() {
           source: roadmap._id,
           target: step._id,
         });
-        parseRoadmap(step);
+        parseRoadmap(step, false);
       });
     };
-
-    parseRoadmap(selectedRoadmap);
+    parseRoadmap(selectedRoadmap, true);
 
     return { initialNodes, initialEdges };
-  }, [selectedRoadmap]);
+  }, [roadmaps, selectedRoadmapId]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);

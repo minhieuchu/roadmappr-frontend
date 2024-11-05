@@ -14,7 +14,8 @@ export const useRoadmapStore = create(
     immer<RoadmapStoreType>((set) => ({
       dialogName: "",
       roadmaps: [],
-      selectedRoadmap: null,
+      selectedRoadmapId: "",
+      selectedStepId: "",
 
       setDialogName: (name: RoadmapDialogName) => {
         set((state) => {
@@ -28,22 +29,34 @@ export const useRoadmapStore = create(
         });
       },
 
-      setSelectedRoadmap: (roadMap: Roadmap) => {
+      setSelectedRoadmapId: (roadmapId: string) => {
         set((state) => {
-          state.selectedRoadmap = roadMap;
+          state.selectedRoadmapId = roadmapId;
+        });
+      },
+
+      setSelectedStepId: (stepId: string) => {
+        set((state) => {
+          state.selectedStepId = stepId;
         });
       },
     })),
     {
       name: "RoadmapStorage",
-    },
-  ),
+    }
+  )
 );
 
 export const selectDialogName = (state: RoadmapState) => state.dialogName;
 export const selectRoadmaps = (state: RoadmapState) => state.roadmaps;
-export const selectSelectedRoadmap = (state: RoadmapState) =>
-  state.selectedRoadmap;
+export const selectSelectedRoadmapId = (state: RoadmapState) =>
+  state.selectedRoadmapId;
+export const selectSelectedStepId = (state: RoadmapState) =>
+  state.selectedStepId;
 
-export const { setDialogName, setRoadmaps, setSelectedRoadmap } =
-  useRoadmapStore.getState();
+export const {
+  setDialogName,
+  setRoadmaps,
+  setSelectedRoadmapId,
+  setSelectedStepId,
+} = useRoadmapStore.getState();
