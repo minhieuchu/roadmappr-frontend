@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   DialogStyled,
@@ -21,9 +21,10 @@ import Button from "@mui/material/Button";
 import { cyan } from "@mui/material/colors";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useReactFlow } from "@xyflow/react";
+import { CustomNodeData } from "@/components/RoadmapFlow/CustomNode";
 
-export function AddDialog() {
-  const reactFlow = useReactFlow();
+export function EditDialog() {
+  const reactFlow = useReactFlow<CustomNodeData>();
   const [input, setInput] = useState("");
   const selectedDialogName = useRoadmapStore(selectDialogName);
   const selectedRoadmapId = useRoadmapStore(selectSelectedRoadmapId);
@@ -31,13 +32,19 @@ export function AddDialog() {
   const roadmaps = useRoadmapStore(selectRoadmaps);
 
   const isOpen = useMemo(
-    () => selectedDialogName === "AddNodeDialog",
+    () => selectedDialogName === "EditNodeDialog",
     [selectedDialogName]
   );
-  const dialogTitle = useMemo(
-    () => (selectedStepId ? "Tell us your next step" : "Tell us your goal"),
-    [selectedStepId]
+
+  const editNode = useMemo(
+    () => reactFlow.getNode(selectedStepId),
+    [reactFlow, selectedStepId]
   );
+
+  useEffect(() => {
+    setInput(editNode?.data.target ?? "");
+  }, [editNode]);
+
   const onClose = useCallback(() => setDialogName(""), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,42 +53,39 @@ export function AddDialog() {
     []
   );
   const onSubmit = useCallback(async () => {
-    try {
-      if (selectedRoadmapId && selectedStepId) {
-        const edges = reactFlow.getEdges();
-        const stepIdsToRoot = [selectedStepId];
-        let currentStepId = selectedStepId;
+    if (!selectedRoadmapId || !selectedStepId) {
+      return;
+    }
+    const edges = reactFlow.getEdges();
+    const stepIdsToRoot = [selectedStepId];
+    let currentStepId = selectedStepId;
 
-        while (true) {
-          const edge = edges.find((edge) => edge.target === currentStepId);
-          if (!edge) {
-            break;
-          }
-          stepIdsToRoot.push(edge.source);
-          if (edge.source === selectedRoadmapId) {
-            break;
-          }
-          currentStepId = edge.source;
-        }
-
-        stepIdsToRoot.reverse();
-
-        const { data: updatedRoadmap } = await axios.post<Roadmap>(
-          `${import.meta.env.VITE_BACKEND_URL}/create`,
-          {
-            step_ids: stepIdsToRoot,
-            target: input,
-          }
-        );
-        const updatedRoadmaps = roadmaps.map((roadmap) =>
-          roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap
-        );
-        setRoadmaps(updatedRoadmaps);
-      } else {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/create`, {
-          target: input,
-        });
+    while (true) {
+      const edge = edges.find((edge) => edge.target === currentStepId);
+      if (!edge) {
+        break;
       }
+      stepIdsToRoot.push(edge.source);
+      if (edge.source === selectedRoadmapId) {
+        break;
+      }
+      currentStepId = edge.source;
+    }
+
+    stepIdsToRoot.reverse();
+
+    try {
+      const { data: updatedRoadmap } = await axios.patch<Roadmap>(
+        `${import.meta.env.VITE_BACKEND_URL}/update`,
+        {
+          step_ids: stepIdsToRoot,
+          target: input,
+        }
+      );
+      const updatedRoadmaps = roadmaps.map((roadmap) =>
+        roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap
+      );
+      setRoadmaps(updatedRoadmaps);
     } catch (e) {
       console.error(e);
     }
@@ -92,7 +96,7 @@ export function AddDialog() {
 
   return (
     <DialogStyled onClose={onClose} open={isOpen} transitionDuration={300}>
-      <DialogTitle sx={{ color: cyan[500] }}>{dialogTitle}</DialogTitle>
+      <DialogTitle sx={{ color: cyan[500] }}>Edit</DialogTitle>
       <DialogContent>
         <TextFieldStyled
           value={input}
@@ -107,7 +111,7 @@ export function AddDialog() {
           sx={{ color: cyan[500] }}
           onClick={onSubmit}
         >
-          {"Let's go"}
+          {"Submit"}
         </Button>
       </DialogActions>
     </DialogStyled>

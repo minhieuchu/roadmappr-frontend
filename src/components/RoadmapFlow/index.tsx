@@ -28,6 +28,7 @@ import {
   useNodesState,
   useReactFlow,
 } from "@xyflow/react";
+import { EditDialog } from "@/components/Dialogs/EditDialog";
 
 const nodeTypes = {
   CustomNode: CustomNode,
@@ -104,6 +105,7 @@ function RoadmapGrid() {
   return (
     <RoadmapGridContainer>
       <AddDialog />
+      <EditDialog />
       {!nodes.length && (
         <AddButtonContainer onClick={onAddButtonClick}>
           <AddIcon />

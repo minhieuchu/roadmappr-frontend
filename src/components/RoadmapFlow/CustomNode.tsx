@@ -35,6 +35,12 @@ export function CustomNode({ data }: NodeProps<CustomNodeData>) {
     handleMenuClose();
   }, [data._id, handleMenuClose]);
 
+  const handleEditOptionClick = useCallback(() => {
+    setDialogName("EditNodeDialog");
+    setSelectedStepId(data._id);
+    handleMenuClose();
+  }, [data._id, handleMenuClose]);
+
   return (
     <>
       {data.hasTarget && <Handle type="target" position={Position.Top} />}
@@ -49,7 +55,9 @@ export function CustomNode({ data }: NodeProps<CustomNodeData>) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleAddStepOptionClick}>Add step</MenuItem>
+        <MenuItem onClick={handleAddStepOptionClick}>Add sub-step</MenuItem>
+        <MenuItem onClick={handleEditOptionClick}>Edit</MenuItem>
+        <MenuItem>Delete</MenuItem>
       </MenuStyled>
       {data.hasSource && <Handle type="source" position={Position.Bottom} />}
     </>

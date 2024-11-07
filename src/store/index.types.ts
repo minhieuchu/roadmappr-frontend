@@ -1,4 +1,4 @@
-export type RoadmapDialogName = "AddNodeDialog" | "";
+export type RoadmapDialogName = "AddNodeDialog" | "EditNodeDialog" | "";
 
 export type Roadmap = {
   _id: string;

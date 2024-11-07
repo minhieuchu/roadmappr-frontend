@@ -60,6 +60,7 @@ export const LeftPanelPopoverContainer = styled("div")({
   backgroundColor: "#141020",
   borderRadius: "1rem",
   boxSizing: "border-box",
+  fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
 
   "& > div": {
     display: "flex",
@@ -124,6 +125,11 @@ export const CustomNodeContainer = styled("div")({
 
 export const MenuStyled = styled(Menu)({
   ".MuiPaper-root": {
-    backgroundColor: "whitesmoke",
+    backgroundColor: "#63aeb1",
+    color: "floralwhite",
+    borderRadius: "0.5rem",
+    li: {
+      fontSize: "0.9375rem",
+    },
   },
 });
