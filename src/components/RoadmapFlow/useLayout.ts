@@ -52,11 +52,11 @@ function useLayout() {
         });
 
         return { ...node };
-      })
+      }),
     );
 
     setEdges((edges) =>
-      edges.map((edge) => ({ ...edge, style: { opacity: 1 } }))
+      edges.map((edge) => ({ ...edge, style: { opacity: 1 } })),
     );
   }, [getNodes, getEdges, setNodes, setEdges, nodesInitialized]);
 }

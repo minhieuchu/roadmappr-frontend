@@ -15,7 +15,7 @@ import {
   setDialogName,
   useRoadmapStore,
 } from "@/store";
-import { Roadmap } from "@/store/index.types";
+import { Roadmap, RoadmapDialogName } from "@/store/index.types";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Background,
@@ -29,6 +29,7 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { EditDialog } from "@/components/Dialogs/EditDialog";
+import { DeleteDialog } from "@/components/Dialogs/DeleteDialog";
 
 const nodeTypes = {
   CustomNode: CustomNode,
@@ -43,7 +44,7 @@ function RoadmapGrid() {
     const initialNodes: Node[] = [];
     const initialEdges: Edge[] = [];
     const selectedRoadmap = roadmaps.find(
-      (roadmap) => roadmap._id === selectedRoadmapId
+      (roadmap) => roadmap._id === selectedRoadmapId,
     );
     if (!selectedRoadmap) {
       return { initialNodes, initialEdges };
@@ -91,7 +92,7 @@ function RoadmapGrid() {
   }, [initialEdges, setEdges]);
 
   const onAddButtonClick = useCallback(() => {
-    setDialogName("AddNodeDialog");
+    setDialogName(RoadmapDialogName.AddNode);
   }, []);
 
   const onReactFlowInit = useCallback(() => {
@@ -106,6 +107,7 @@ function RoadmapGrid() {
     <RoadmapGridContainer>
       <AddDialog />
       <EditDialog />
+      <DeleteDialog />
       {!nodes.length && (
         <AddButtonContainer onClick={onAddButtonClick}>
           <AddIcon />

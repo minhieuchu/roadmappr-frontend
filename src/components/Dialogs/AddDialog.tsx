@@ -12,10 +12,11 @@ import {
   selectSelectedStepId,
   setDialogName,
   setRoadmaps,
+  setSelectedRoadmapId,
   setSelectedStepId,
   useRoadmapStore,
 } from "@/store";
-import { Roadmap } from "@/store/index.types";
+import { Roadmap, RoadmapDialogName } from "@/store/index.types";
 import { DialogActions, DialogContent } from "@mui/material";
 import Button from "@mui/material/Button";
 import { cyan } from "@mui/material/colors";
@@ -31,19 +32,19 @@ export function AddDialog() {
   const roadmaps = useRoadmapStore(selectRoadmaps);
 
   const isOpen = useMemo(
-    () => selectedDialogName === "AddNodeDialog",
-    [selectedDialogName]
+    () => selectedDialogName === RoadmapDialogName.AddNode,
+    [selectedDialogName],
   );
   const dialogTitle = useMemo(
     () => (selectedStepId ? "Tell us your next step" : "Tell us your goal"),
-    [selectedStepId]
+    [selectedStepId],
   );
-  const onClose = useCallback(() => setDialogName(""), []);
+  const onClose = useCallback(() => setDialogName(RoadmapDialogName.Empty), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);
     },
-    []
+    [],
   );
   const onSubmit = useCallback(async () => {
     try {
@@ -71,16 +72,22 @@ export function AddDialog() {
           {
             step_ids: stepIdsToRoot,
             target: input,
-          }
+          },
         );
         const updatedRoadmaps = roadmaps.map((roadmap) =>
-          roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap
+          roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap,
         );
         setRoadmaps(updatedRoadmaps);
       } else {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/create`, {
-          target: input,
-        });
+        const { data: newRoadmap } = await axios.post<Roadmap>(
+          `${import.meta.env.VITE_BACKEND_URL}/create`,
+          {
+            target: input,
+          },
+        );
+        const newRoadmaps = [...roadmaps, newRoadmap];
+        setRoadmaps(newRoadmaps);
+        setSelectedRoadmapId(newRoadmap._id);
       }
     } catch (e) {
       console.error(e);

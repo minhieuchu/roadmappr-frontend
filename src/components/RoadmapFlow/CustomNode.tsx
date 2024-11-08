@@ -5,6 +5,7 @@ import {
   MenuStyled,
 } from "@/components/RoadmapFlow/index.styles";
 import { setDialogName, setSelectedStepId } from "@/store";
+import { RoadmapDialogName } from "@/store/index.types";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import { Handle, Node, NodeProps, Position } from "@xyflow/react";
@@ -22,24 +23,21 @@ export function CustomNode({ data }: NodeProps<CustomNodeData>) {
     (event: React.MouseEvent<SVGSVGElement>) => {
       setAnchorEl(event.currentTarget);
     },
-    []
+    [],
   );
 
   const handleMenuClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
 
-  const handleAddStepOptionClick = useCallback(() => {
-    setDialogName("AddNodeDialog");
-    setSelectedStepId(data._id);
-    handleMenuClose();
-  }, [data._id, handleMenuClose]);
-
-  const handleEditOptionClick = useCallback(() => {
-    setDialogName("EditNodeDialog");
-    setSelectedStepId(data._id);
-    handleMenuClose();
-  }, [data._id, handleMenuClose]);
+  const optionClickHandler = useCallback(
+    (dialogName: RoadmapDialogName) => () => {
+      setDialogName(dialogName);
+      setSelectedStepId(data._id);
+      handleMenuClose();
+    },
+    [data._id, handleMenuClose],
+  );
 
   return (
     <>
@@ -55,9 +53,15 @@ export function CustomNode({ data }: NodeProps<CustomNodeData>) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleAddStepOptionClick}>Add sub-step</MenuItem>
-        <MenuItem onClick={handleEditOptionClick}>Edit</MenuItem>
-        <MenuItem>Delete</MenuItem>
+        <MenuItem onClick={optionClickHandler(RoadmapDialogName.AddNode)}>
+          Add sub-step
+        </MenuItem>
+        <MenuItem onClick={optionClickHandler(RoadmapDialogName.EditNode)}>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={optionClickHandler(RoadmapDialogName.DeleteNode)}>
+          Delete
+        </MenuItem>
       </MenuStyled>
       {data.hasSource && <Handle type="source" position={Position.Bottom} />}
     </>

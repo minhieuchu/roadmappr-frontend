@@ -35,19 +35,19 @@ export function LeftPanel() {
   const handleRoadmapClick = useCallback(
     (roadmapId: string) => () => {
       const selectedRoadmap = roadmaps.find(
-        (roadmap) => roadmap._id === roadmapId
+        (roadmap) => roadmap._id === roadmapId,
       )!;
       setSelectedRoadmapId(selectedRoadmap._id);
       handlePopoverClose();
     },
-    [roadmaps, handlePopoverClose]
+    [roadmaps, handlePopoverClose],
   );
 
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
         const { data } = await axios.get<Roadmap[]>(
-          `${import.meta.env.VITE_BACKEND_URL}/roadmaps`
+          `${import.meta.env.VITE_BACKEND_URL}/roadmaps`,
         );
         setRoadmaps(data);
         if (data.length) {

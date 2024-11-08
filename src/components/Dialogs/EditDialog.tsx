@@ -15,7 +15,7 @@ import {
   setSelectedStepId,
   useRoadmapStore,
 } from "@/store";
-import { Roadmap } from "@/store/index.types";
+import { Roadmap, RoadmapDialogName } from "@/store/index.types";
 import { DialogActions, DialogContent } from "@mui/material";
 import Button from "@mui/material/Button";
 import { cyan } from "@mui/material/colors";
@@ -32,28 +32,29 @@ export function EditDialog() {
   const roadmaps = useRoadmapStore(selectRoadmaps);
 
   const isOpen = useMemo(
-    () => selectedDialogName === "EditNodeDialog",
-    [selectedDialogName]
+    () => selectedDialogName === RoadmapDialogName.EditNode,
+    [selectedDialogName],
   );
 
   const editNode = useMemo(
     () => reactFlow.getNode(selectedStepId),
-    [reactFlow, selectedStepId]
+    [reactFlow, selectedStepId],
   );
 
   useEffect(() => {
     setInput(editNode?.data.target ?? "");
   }, [editNode]);
 
-  const onClose = useCallback(() => setDialogName(""), []);
+  const onClose = useCallback(() => setDialogName(RoadmapDialogName.Empty), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);
     },
-    []
+    [],
   );
   const onSubmit = useCallback(async () => {
     if (!selectedRoadmapId || !selectedStepId) {
+      onClose();
       return;
     }
     const edges = reactFlow.getEdges();
@@ -80,10 +81,10 @@ export function EditDialog() {
         {
           step_ids: stepIdsToRoot,
           target: input,
-        }
+        },
       );
       const updatedRoadmaps = roadmaps.map((roadmap) =>
-        roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap
+        roadmap._id === selectedRoadmapId ? updatedRoadmap : roadmap,
       );
       setRoadmaps(updatedRoadmaps);
     } catch (e) {

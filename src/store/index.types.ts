@@ -1,4 +1,9 @@
-export type RoadmapDialogName = "AddNodeDialog" | "EditNodeDialog" | "";
+export enum RoadmapDialogName {
+  AddNode = "AddNode",
+  EditNode = "EditNode",
+  DeleteNode = "DeleteNode",
+  Empty = "",
+}
 
 export type Roadmap = {
   _id: string;

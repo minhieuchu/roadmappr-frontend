@@ -12,7 +12,7 @@ import {
 export const useRoadmapStore = create(
   persist(
     immer<RoadmapStoreType>((set) => ({
-      dialogName: "",
+      dialogName: RoadmapDialogName.Empty,
       roadmaps: [],
       selectedRoadmapId: "",
       selectedStepId: "",
@@ -43,8 +43,8 @@ export const useRoadmapStore = create(
     })),
     {
       name: "RoadmapStorage",
-    }
-  )
+    },
+  ),
 );
 
 export const selectDialogName = (state: RoadmapState) => state.dialogName;
