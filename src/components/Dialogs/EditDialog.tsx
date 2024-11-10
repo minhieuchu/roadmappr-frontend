@@ -5,6 +5,7 @@ import {
   DialogStyled,
   TextFieldStyled,
 } from "@/components/Dialogs/index.styles";
+import { CustomNodeData } from "@/components/RoadmapFlow/CustomNode";
 import {
   selectDialogName,
   selectRoadmaps,
@@ -21,7 +22,6 @@ import Button from "@mui/material/Button";
 import { cyan } from "@mui/material/colors";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useReactFlow } from "@xyflow/react";
-import { CustomNodeData } from "@/components/RoadmapFlow/CustomNode";
 
 export function EditDialog() {
   const reactFlow = useReactFlow<CustomNodeData>();
@@ -45,7 +45,7 @@ export function EditDialog() {
     setInput(editNode?.data.target ?? "");
   }, [editNode]);
 
-  const onClose = useCallback(() => setDialogName(RoadmapDialogName.Empty), []);
+  const onClose = useCallback(() => setDialogName(RoadmapDialogName.None), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);

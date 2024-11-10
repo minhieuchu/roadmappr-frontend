@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   LeftPanelContainer,
@@ -7,29 +7,51 @@ import {
   PopoverStyled,
 } from "@/components/RoadmapFlow/index.styles";
 import {
+  selectDialogName,
   selectRoadmaps,
   selectSelectedRoadmapId,
+  setDialogName,
   setRoadmaps,
   setSelectedRoadmapId,
   useRoadmapStore,
 } from "@/store";
-import { Roadmap } from "@/store/index.types";
-import GridViewIcon from "@mui/icons-material/GridView";
+import { Roadmap, RoadmapDialogName } from "@/store/index.types";
+import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Tooltip from "@mui/material/Tooltip";
+
+enum UtilOption {
+  RoadmapList = "RoadmapList",
+  AddNew = "AddNew",
+  Null = "",
+}
 
 export function LeftPanel() {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [utilOption, setUtilOption] = useState<UtilOption>(UtilOption.Null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isPopoverOpen = Boolean(anchorEl);
   const roadmaps = useRoadmapStore(selectRoadmaps);
   const selectedRoadmapId = useRoadmapStore(selectSelectedRoadmapId);
+  const selectedDialogName = useRoadmapStore(selectDialogName);
 
-  const handleLeftPanelIconClick = useCallback(() => {
+  const isPopoverOpen = useMemo(
+    () => utilOption === UtilOption.RoadmapList,
+    [utilOption],
+  );
+
+  const handleRoadmapListClick = useCallback(() => {
+    setUtilOption(UtilOption.RoadmapList);
     setAnchorEl(containerRef.current);
+  }, []);
+
+  const handleAddNew = useCallback(() => {
+    setUtilOption(UtilOption.AddNew);
+    setDialogName(RoadmapDialogName.AddNode);
   }, []);
 
   const handlePopoverClose = useCallback(() => {
     setAnchorEl(null);
+    setUtilOption(UtilOption.Null);
   }, []);
 
   const handleRoadmapClick = useCallback(
@@ -42,6 +64,18 @@ export function LeftPanel() {
     },
     [roadmaps, handlePopoverClose],
   );
+
+  const { addNewOptionClassName, roadmapListOptionClassName } = useMemo(() => {
+    let roadmapListOptionClassName = "",
+      addNewOptionClassName = "";
+    if (utilOption === UtilOption.AddNew) {
+      addNewOptionClassName = "selected";
+    }
+    if (utilOption === UtilOption.RoadmapList) {
+      roadmapListOptionClassName = "selected";
+    }
+    return { addNewOptionClassName, roadmapListOptionClassName };
+  }, [utilOption]);
 
   useEffect(() => {
     const fetchRoadmaps = async () => {
@@ -64,6 +98,12 @@ export function LeftPanel() {
 
     fetchRoadmaps();
   }, [selectedRoadmapId]);
+
+  useEffect(() => {
+    if (selectedDialogName === RoadmapDialogName.None) {
+      setUtilOption(UtilOption.Null);
+    }
+  }, [selectedDialogName]);
 
   return (
     <LeftPanelContainer ref={containerRef}>
@@ -89,7 +129,16 @@ export function LeftPanel() {
         </LeftPanelPopoverContainer>
       </PopoverStyled>
       <Tooltip title="Roadmaps">
-        <GridViewIcon onClick={handleLeftPanelIconClick} />
+        <FormatListBulletedIcon
+          className={roadmapListOptionClassName}
+          onClick={handleRoadmapListClick}
+        />
+      </Tooltip>
+      <Tooltip title="Add new">
+        <DataSaverOnIcon
+          className={addNewOptionClassName}
+          onClick={handleAddNew}
+        />
       </Tooltip>
     </LeftPanelContainer>
   );

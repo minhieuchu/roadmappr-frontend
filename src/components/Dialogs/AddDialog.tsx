@@ -39,7 +39,7 @@ export function AddDialog() {
     () => (selectedStepId ? "Tell us your next step" : "Tell us your goal"),
     [selectedStepId],
   );
-  const onClose = useCallback(() => setDialogName(RoadmapDialogName.Empty), []);
+  const onClose = useCallback(() => setDialogName(RoadmapDialogName.None), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);

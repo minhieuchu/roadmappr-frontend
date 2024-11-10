@@ -30,10 +30,11 @@ export const LeftPanelContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  gap: "1rem",
   padding: "1.5rem 1rem",
   borderTopRightRadius: "1.25rem",
   borderBottomRightRadius: "1.25rem",
-  backgroundColor: "#141020",
+  backgroundColor: "#020007",
   boxSizing: "border-box",
   zIndex: 1,
 
@@ -41,6 +42,11 @@ export const LeftPanelContainer = styled("div")({
     color: "white",
     fontSize: "1.75rem",
     cursor: "pointer",
+    transition: "0.3s",
+
+    "&.selected": {
+      color: cyan[500],
+    },
   },
 });
 
@@ -57,7 +63,7 @@ export const LeftPanelPopoverContainer = styled("div")({
   height: "20rem",
   padding: "1.5rem 0",
   color: "white",
-  backgroundColor: "#141020",
+  backgroundColor: "#020007",
   borderRadius: "1rem",
   boxSizing: "border-box",
   fontFamily: "Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
