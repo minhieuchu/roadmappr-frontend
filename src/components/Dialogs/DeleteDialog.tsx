@@ -41,7 +41,10 @@ export function DeleteDialog() {
     [selectedRoadmapId, selectedStepId],
   );
 
-  const onClose = useCallback(() => setDialogName(RoadmapDialogName.None), []);
+  const onClose = useCallback(() => {
+    setDialogName(RoadmapDialogName.None);
+    setSelectedStepId("");
+  }, []);
 
   const deleteNodeHandler = useCallback(
     (deleteRecursive: boolean) => async () => {

@@ -5,6 +5,7 @@ import {
   DialogStyled,
   TextFieldStyled,
 } from "@/components/Dialogs/index.styles";
+import { useAutoFocus, useSubmitOnEnter } from "@/hooks/useFormInput";
 import {
   selectDialogName,
   selectRoadmaps,
@@ -35,18 +36,30 @@ export function AddDialog() {
     () => selectedDialogName === RoadmapDialogName.AddNode,
     [selectedDialogName],
   );
+
+  const { inputRef } = useAutoFocus(isOpen);
+
   const dialogTitle = useMemo(
     () => (selectedStepId ? "Tell us your next step" : "Tell us your goal"),
     [selectedStepId],
   );
-  const onClose = useCallback(() => setDialogName(RoadmapDialogName.None), []);
+
+  const onClose = useCallback(() => {
+    setDialogName(RoadmapDialogName.None);
+    setSelectedStepId("");
+  }, []);
+
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);
     },
     [],
   );
+
   const onSubmit = useCallback(async () => {
+    if (!input.length) {
+      return;
+    }
     try {
       if (selectedRoadmapId && selectedStepId) {
         const edges = reactFlow.getEdges();
@@ -97,6 +110,8 @@ export function AddDialog() {
     setSelectedStepId("");
   }, [input, onClose, reactFlow, roadmaps, selectedRoadmapId, selectedStepId]);
 
+  useSubmitOnEnter(onSubmit);
+
   return (
     <DialogStyled onClose={onClose} open={isOpen} transitionDuration={300}>
       <DialogTitle sx={{ color: cyan[500] }}>{dialogTitle}</DialogTitle>
@@ -106,6 +121,7 @@ export function AddDialog() {
           variant="standard"
           sx={{ width: "100%", fontWeight: 300 }}
           onChange={onInputChange}
+          inputRef={inputRef}
         />
       </DialogContent>
       <DialogActions sx={{ padding: "0.5rem 1.5rem" }}>

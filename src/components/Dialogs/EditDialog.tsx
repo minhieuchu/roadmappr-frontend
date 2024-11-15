@@ -6,6 +6,7 @@ import {
   TextFieldStyled,
 } from "@/components/Dialogs/index.styles";
 import { CustomNodeData } from "@/components/RoadmapFlow/CustomNode";
+import { useAutoFocus, useSubmitOnEnter } from "@/hooks/useFormInput";
 import {
   selectDialogName,
   selectRoadmaps,
@@ -36,24 +37,27 @@ export function EditDialog() {
     [selectedDialogName],
   );
 
+  const { inputRef } = useAutoFocus(isOpen);
+
   const editNode = useMemo(
     () => reactFlow.getNode(selectedStepId),
     [reactFlow, selectedStepId],
   );
 
-  useEffect(() => {
-    setInput(editNode?.data.target ?? "");
-  }, [editNode]);
+  const onClose = useCallback(() => {
+    setDialogName(RoadmapDialogName.None);
+    setSelectedStepId("");
+  }, []);
 
-  const onClose = useCallback(() => setDialogName(RoadmapDialogName.None), []);
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInput(event.target.value);
     },
     [],
   );
+
   const onSubmit = useCallback(async () => {
-    if (!selectedRoadmapId || !selectedStepId) {
+    if (!selectedRoadmapId || !selectedStepId || !input.length) {
       onClose();
       return;
     }
@@ -95,6 +99,12 @@ export function EditDialog() {
     setSelectedStepId("");
   }, [input, onClose, reactFlow, roadmaps, selectedRoadmapId, selectedStepId]);
 
+  useSubmitOnEnter(onSubmit);
+
+  useEffect(() => {
+    setInput(editNode?.data.target ?? "");
+  }, [editNode]);
+
   return (
     <DialogStyled onClose={onClose} open={isOpen} transitionDuration={300}>
       <DialogTitle sx={{ color: cyan[500] }}>Edit</DialogTitle>
@@ -104,6 +114,7 @@ export function EditDialog() {
           variant="standard"
           sx={{ width: "100%", fontWeight: 300 }}
           onChange={onInputChange}
+          inputRef={inputRef}
         />
       </DialogContent>
       <DialogActions sx={{ padding: "0.5rem 1.5rem" }}>
